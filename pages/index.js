@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '@/styles/Home.module.css'
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, use } from 'react';
 import axios from 'axios';
 import { Player } from '@lottiefiles/react-lottie-player';
 import SideColumn from '@/components/sideColumn';
@@ -161,7 +161,7 @@ export default function Home() {
   const url2 = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=${units}&appid=${apiKey2}`;
 
   const [data, setData] = useState([]);
-  const [city, setCity] = useState('');
+  const [city, setCity] = useState('Miami');
 
   const grabWeather = useRef(false);
 
@@ -281,7 +281,24 @@ export default function Home() {
       setUnits("imperial");
     }
   }
-    
+
+  const [miamiData, setMiamiData] = useState();
+  const [miamiWeather, setMiamiWeather] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const miami = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=Miami&units=metric&appid=${apiKey}`);
+        setMiamiData(miami.data);
+        setMiamiWeather(miami.data.weather);
+      } catch (err2) {
+        console.log(err2);
+      }
+    };
+    fetchData();
+  }, []);
+
+
   useEffect(() => {
       console.log(units)
       updateUnits();
@@ -322,16 +339,41 @@ export default function Home() {
 
         <CurrentCont>
           <Row style={{justifyContent:'space-between', width:'100%'}}>
+
+            { currentWeather ? currentWeather.map((w, index) => {
+              return (
+                <Desc style={{gap:'0rem', border:'3px solid var(--yellow-color)', borderRadius:'15px', flexDirection:'row', alignItems:'center'}} >
+              <City>{city.toUpperCase()}</City>
+              <h2 style={{padding:'0.25rem 1rem 0.25rem 0',fontSize:'0.75rem', color:'var(--lightgray-color)'}}>{currentData.sys.country}</h2>
+              </Desc>
+
+              )
+            }) : 
+              miamiData && (
+                <Desc style={{gap:'0rem', border:'3px solid var(--yellow-color)', borderRadius:'15px', flexDirection:'row', alignItems:'center'}} >
+              <City>{miamiData.name.toUpperCase()}</City>
+              <h2 style={{padding:'0.25rem 1rem 0.25rem 0',fontSize:'0.75rem', color:'var(--lightgray-color)'}}>{miamiData.sys.country}</h2>
+              </Desc>
+                )
+              }
+
+{/* 
             <Desc style={{gap:'0rem', border:'3px solid var(--yellow-color)', borderRadius:'15px', flexDirection:'row', alignItems:'center'}} >
               <City>{city.toUpperCase()}</City>
               {
               currentWeather && currentWeather.map((w, index) => {
               return (
+                <Desc style={{gap:'0rem', border:'3px solid var(--yellow-color)', borderRadius:'15px', flexDirection:'row', alignItems:'center'}} >
+              <City>{city.toUpperCase()}</City>
               <h2 style={{padding:'0.25rem 1rem 0.25rem 0',fontSize:'0.75rem', color:'var(--lightgray-color)'}}>{currentData.sys.country}</h2>
+              </Desc>
                 )
                 })
               }
-            </Desc>
+            </Desc> */}
+
+
+
               <ToggleButton
             type="button"
             onClick={() => setActiveMetric(inactiveMetric)}>
@@ -355,15 +397,12 @@ export default function Home() {
             </ToggleButton>
             </Row>
 
-
-
             {
-          currentWeather && currentWeather.map((w, index) => {
+          currentWeather ? currentWeather.map((w, index) => {
             return (
               <div key={index} style={{display:'flex', flexDirection:'row', justifyContent:'space-between', width:'100%', alignItems:'center'}}>
                
                 <Row style={{gap:'7rem'}}>
-                
                 
                 <Desc style={{flexDirection:'column', alignItems:'flex-start'}}>
                 <Subheader>CURRENT TEMPURATURE:</Subheader>
@@ -373,9 +412,7 @@ export default function Home() {
                 </Row>
                 </Desc>
                 
-
                 <Grid> 
-
                 <Desc style={{flexDirection:'column', color:'var(--white-color)', alignItems:'flex-start'}}>
                   <Subheader>FEELS LIKE:</Subheader>
                   <Row>
@@ -407,9 +444,7 @@ export default function Home() {
                   <h2 style={{color:'var(--white-color)', fontSize:'1rem'}}>°C</h2>
                   </Row>
                 </Desc>
-
                 </Grid>
-
                 </Row>
 
                 <Column style={{justifyContent:'center', alignItems:'center'}}>
@@ -420,14 +455,77 @@ export default function Home() {
                   style={{ height: '200px', width: '200px'}}
                 src={`/animations/${w.main.toLowerCase()}.json`}/>
                 <h1 style={{fontSize:'1.5rem',color:'var(--white-color)'}}>{w.main}</h1>
-                
                 </Column>
-
-
               </div>
             )
-          })
+          }
+          ) :
+          miamiData &&
+          miamiWeather.map((w, index) => {
+            return (
+            <div key={index} style={{display:'flex', flexDirection:'row', justifyContent:'space-between', width:'100%', alignItems:'center'}}>
+               
+            <Row style={{gap:'7rem'}}>
+            
+            <Desc style={{flexDirection:'column', alignItems:'flex-start'}}>
+            <Subheader>CURRENT TEMPURATURE:</Subheader>
+            <Row>
+            <h1 style={{fontSize:'5rem', color:'var(--white-color)'}}>{miamiData.main.temp}</h1>
+            <h2 style={{color:'var(--white-color)'}}>°C</h2>
+            </Row>
+            </Desc>
+            
+            <Grid> 
+            <Desc style={{flexDirection:'column', color:'var(--white-color)', alignItems:'flex-start'}}>
+              <Subheader>FEELS LIKE:</Subheader>
+              <Row>
+              <h1 style={{fontSize:'1.5rem'}}>{miamiData.main.feels_like}</h1>
+              <h2 style={{color:'var(--white-color)', fontSize:'1rem'}}>°C</h2>
+              </Row>
+            </Desc>
+
+            <Desc style={{flexDirection:'column', color:'var(--white-color)', alignItems:'flex-start'}}>
+              <Subheader>HUMIDITY:</Subheader>
+              <Row>
+              <h1 style={{fontSize:'1.5rem'}}>{miamiData.main.humidity}</h1>
+              <h2 style={{color:'var(--white-color)', fontSize:'1rem'}}>%</h2>
+              </Row>
+            </Desc>
+
+            <Desc style={{flexDirection:'column', color:'var(--white-color)', alignItems:'flex-start'}}>
+              <Subheader>MIN. TEMP:</Subheader>
+              <Row>
+              <h1 style={{fontSize:'1.5rem'}}>{miamiData.main.temp_min}</h1>
+              <h2 style={{color:'var(--white-color)', fontSize:'1rem'}}>°C</h2>
+              </Row>
+            </Desc>
+
+            <Desc style={{flexDirection:'column', color:'var(--white-color)', alignItems:'flex-start'}}>
+              <Subheader>MAX. TEMP:</Subheader>
+              <Row>
+              <h1 style={{fontSize:'1.5rem'}}>{miamiData.main.temp_max}</h1>
+              <h2 style={{color:'var(--white-color)', fontSize:'1rem'}}>°C</h2>
+              </Row>
+            </Desc>
+            </Grid>
+            </Row>
+
+            <Column style={{justifyContent:'center', alignItems:'center'}}>
+            <Player
+              autoplay
+              loop
+              speed={1}
+              style={{ height: '200px', width: '200px'}}
+            src={`/animations/${w.main.toLowerCase()}.json`}/>
+            <h1 style={{fontSize:'1.5rem',color:'var(--white-color)'}}>{w.main}</h1>
+            </Column>
+          </div>
+          )
+
         }
+        )
+        }
+
 
         </CurrentCont>
         
