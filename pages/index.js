@@ -139,8 +139,8 @@ export default function Home() {
 
   // const activeMetric = require('../components/sideColumn');
 
-  var apiKey =process.env.NEXT_PUBLIC_apiKey;
-  var apiKey2 =process.env.NEXT_PUBLIC_apiKey2;
+  var apiKey =process.env.NEXT_PUBLIC_API_KEY;
+  var apiKey2 =process.env.NEXT_PUBLIC_API_KEY_2;
   
   const [units , setUnits] = useState('metric');
 
@@ -339,16 +339,16 @@ export default function Home() {
             <span>
                 <Image src='icons/farenheit.svg'
                 alt='farenheit'
-                width={20}
-                height={20}
+                width={18}
+                height={18}
                 />
             </span>
             
             <span>
                 <Image src='icons/celcius.svg'
                 alt='celcius'
-                width={20}
-                height={20}
+                width={18}
+                height={18}
                 />
             </span>
 

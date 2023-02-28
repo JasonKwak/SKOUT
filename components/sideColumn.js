@@ -91,7 +91,7 @@ export default function SideColumn({
     const [currentWeather, setCurrentWeather] = useState();
 
     useEffect(() => {
-    var apiKey2 =process.env.NEXT_PUBLIC_apiKey2;
+    var apiKey2 =process.env.NEXT_PUBLIC_API_KEY_2;
     const location = [
         "2988507", // Paris
         "2147714", // Sydney
