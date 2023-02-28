@@ -235,7 +235,7 @@ export default function Home() {
         var dayIndex = now.getDay(); // get the day of the week index (0-6)
         var day = shortenDays[dayIndex];
 
-        return isSearched ? (
+        return (
           <ForecastCont key={index} style={{gap:'0.5rem'}}>
             <p style={{ fontSize:'0.75rem',marginBottom:'0.5rem'}}>{day}</p>
             <Image
@@ -250,23 +250,7 @@ export default function Home() {
             </Row>
             <div style={{fontSize:'0.75rem'}}>{weather.weather[0].main}</div>
           </ForecastCont>
-        ) : 
-            (
-          <ForecastCont key={index} style={{gap:'0.5rem'}}>
-          <p style={{ fontSize:'0.75rem',marginBottom:'0.5rem'}}>{day}</p>
-          <Image
-            src={icon}
-            alt={icon}
-            width={35}
-            height={35}
-            priority
-          />
-          <Row>
-            <div style={{fontSize:'1.25rem'}}>{weather.main.temp.toFixed(1)}</div> <div>°C</div>
-          </Row>
-          <div style={{fontSize:'0.75rem'}}>{weather.weather[0].main}</div>
-        </ForecastCont>
-          )
+        )
       }
       
     });
@@ -299,30 +283,12 @@ export default function Home() {
   const [miamiData, setMiamiData] = useState();
   const [miamiWeather, setMiamiWeather] = useState(null);
 
-  const [miamiForecastData, setMiamiForecastData] = useState();
 
   useEffect(() => {
     fetchWeather();
   }, []);
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const miami = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=Miami&units=metric&appid=${apiKey2}`);
-        const miamiforecast = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=Miami&units=metric&appid=${apiKey}`);
-        setMiamiData(miami.data);
-        setMiamiWeather(miami.data.weather);
-        
-        let miamiForecast = miamiforecast.data.list;
-        console.log(miamiForecast);
-
-      } catch (err2) {
-        console.log(err2);
-      }
-    };
-    fetchData();
-  }, []);
 
 
   useEffect(() => {
