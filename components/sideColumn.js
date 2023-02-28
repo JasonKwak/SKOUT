@@ -1,12 +1,14 @@
 import styled from "styled-components"
 import styles from '@/styles/Home.module.css'
 import Image from "next/image"
-import { useState, useEffect } from "react"
 import Link from "next/link"
 import City from "./city"
+import axios from "axios"
+import { useState, useEffect, useRef } from 'react'
 
 const Wrapper = styled.div`
 width: 25%;
+min-width:15rem;
 height:100vh;
 display:flex;
 flex-direction:column;
@@ -61,6 +63,19 @@ height:3rem;
 align-items:flex-end;
 `
 
+const Column = styled.div`
+display:flex;
+flex-direction:column;
+width:100%;
+gap:1rem;
+`
+
+const Popular = styled.h1`
+font-size:1rem;
+font-family:'Kanit', sans-serif;
+var(--darkgray-color);
+`
+
 const LogoCont = styled.div`
 width:100%;
 `
@@ -71,6 +86,30 @@ export default function SideColumn({
     onChange = () => {},
     onClick = () => {},
 }){
+
+    const [weatherData, setWeatherData] = useState([]);
+    const [currentWeather, setCurrentWeather] = useState();
+
+    useEffect(() => {
+    var apiKey2 =process.env.NEXT_PUBLIC_apiKey2;
+    const location = [
+        "2988507", // Paris
+        "2147714", // Sydney
+        "1835848", // Seoul
+        "1850147"  // Tokyo
+      ];
+
+    const url2 = `https://api.openweathermap.org/data/2.5/group?id=${location.join(",")}&units=metric&appid=${apiKey2}`;
+    
+    axios.get(url2)
+      .then(response => {
+        setWeatherData(response.data.list);
+        setCurrentWeather(response.data.weather);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []); 
 
     const [activeMetric, setActiveMetric] = useState("Celcius");
     const inactiveMetric = activeMetric === "Celcius" ? "Farenheit" : "Celcius";
@@ -94,8 +133,17 @@ export default function SideColumn({
                 </Row>
             </InputCont>
 
-            <City/>
-
+            <Column>
+            <Popular>Popular Cities</Popular>
+            {weatherData.map((weather, index) => (
+                <City key={index}
+                name={weather.name}
+                temp={weather.main.temp}
+                condition={weather.weather[0].main}
+                src={`/icons/${weather.weather[0].main.toLowerCase()}.svg`}
+                />
+            ))}
+            </Column>
 
                 <div style={{justifyContent:'flex-end', alignItems:'flex-end'}}>
                 <LogoCont>
@@ -108,6 +156,9 @@ export default function SideColumn({
                 </LogoCont>
                 <Links href='https://jasonkwak.ca'>By Jason Kwak</Links>
                 </div>
+
+
+
         </Wrapper>
     )
 }

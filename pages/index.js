@@ -162,6 +162,7 @@ export default function Home() {
 
   const [data, setData] = useState([]);
   const [city, setCity] = useState('');
+
   const grabWeather = useRef(false);
 
   const fetchWeather = async () => {
@@ -321,8 +322,15 @@ export default function Home() {
 
         <CurrentCont>
           <Row style={{justifyContent:'space-between', width:'100%'}}>
-            <Desc style={{gap:'1rem', border:'3px solid var(--yellow-color)', borderRadius:'15px'}} >
+            <Desc style={{gap:'0rem', border:'3px solid var(--yellow-color)', borderRadius:'15px', flexDirection:'row', alignItems:'center'}} >
               <City>{city.toUpperCase()}</City>
+              {
+              currentWeather && currentWeather.map((w, index) => {
+              return (
+              <h2 style={{padding:'0.25rem 1rem 0.25rem 0',fontSize:'0.75rem', color:'var(--lightgray-color)'}}>{currentData.sys.country}</h2>
+                )
+                })
+              }
             </Desc>
               <ToggleButton
             type="button"
