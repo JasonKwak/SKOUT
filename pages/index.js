@@ -452,7 +452,7 @@ export default function Home() {
         speed={1}
         />
 
-<Player 
+        <Player 
         src='animations/slime.json'
         style={{height:'280px', width:'280px', position:'absolute', right:'50%' ,top:'70%', zIndex:'1'}}
         autoplay
@@ -461,9 +461,10 @@ export default function Home() {
         />
 
 
+
         <Player 
         src='animations/circles.json'
-        style={{height:'800px', width:'800px', position:'absolute', right:'4%' ,top:'50%', opacity:'0.6'}}
+        style={{height:'800px', width:'800px', position:'absolute', right:'-10%' ,top:'0%', opacity:'0.6'}}
         autoplay
         loop
         speed={0.6}
@@ -472,7 +473,16 @@ export default function Home() {
 
         <Player 
         src='animations/circles.json'
-        style={{height:'600px', width:'600px', position:'absolute', left:'10%' ,top:'20%'}}
+        style={{height:'600px', width:'600px', position:'absolute', left:'5%' ,bottom:'20%'}}
+        autoplay
+        loop
+        speed={0.6}
+        />
+
+
+        <Player 
+        src='animations/circles.json'
+        style={{height:'600px', width:'600px', position:'absolute', left:'35%' ,top:'10%'}}
         autoplay
         loop
         speed={0.6}
