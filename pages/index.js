@@ -131,10 +131,11 @@ export default function Home() {
 
   const [info, setInfo] = useState({});
   const [currentWeather, setCurrentWeather] = useState();
+  
   const [currentData, setCurrentData] = useState({});
 
 
-  const [weather, setWeather] = useState();
+  const [weather, setWeather] = useState('Miami');
   const [trigger, setTrigger] = useState(false);
 
   // const activeMetric = require('../components/sideColumn');
@@ -232,7 +233,6 @@ export default function Home() {
         var dayIndex = now.getDay(); // get the day of the week index (0-6)
         var day = shortenDays[dayIndex];
 
-
         return (
           <ForecastCont key={index} style={{gap:'0.5rem'}}>
             <p style={{ fontSize:'0.75rem',marginBottom:'0.5rem'}}>{day}</p>
@@ -243,10 +243,6 @@ export default function Home() {
             height={35}
             priority
             />
-            {/* <p>
-               <br/> 
-              {month} {weather.dt_txt.substr(8,2)}
-            </p> */}
             <Row>
             <div style={{fontSize:'1.25rem'}}>{weather.main.temp.toFixed(1)}</div> <div>°C</div>
             </Row>
@@ -257,10 +253,13 @@ export default function Home() {
       }
     });
 
+
+
     setData(weatherData);
 
     setCity(response.data.city.name);
-    setWeather(response.data.weather)
+    setWeather(response.data.weather);
+    
     setInfo(response2.currentdata);
 
     setCurrentWeather(response2.data.weather);
@@ -356,23 +355,6 @@ export default function Home() {
               </Desc>
                 )
               }
-
-{/* 
-            <Desc style={{gap:'0rem', border:'3px solid var(--yellow-color)', borderRadius:'15px', flexDirection:'row', alignItems:'center'}} >
-              <City>{city.toUpperCase()}</City>
-              {
-              currentWeather && currentWeather.map((w, index) => {
-              return (
-                <Desc style={{gap:'0rem', border:'3px solid var(--yellow-color)', borderRadius:'15px', flexDirection:'row', alignItems:'center'}} >
-              <City>{city.toUpperCase()}</City>
-              <h2 style={{padding:'0.25rem 1rem 0.25rem 0',fontSize:'0.75rem', color:'var(--lightgray-color)'}}>{currentData.sys.country}</h2>
-              </Desc>
-                )
-                })
-              }
-            </Desc> */}
-
-
 
               <ToggleButton
             type="button"
@@ -522,11 +504,7 @@ export default function Home() {
           </div>
           )
 
-        }
-        )
-        }
-
-
+        } )}
         </CurrentCont>
         
         <Column style={{justifyContent:'flex-start' ,width:'100%'}}>
@@ -568,7 +546,6 @@ export default function Home() {
         speed={0.6}
         />
 
-
         <Player 
         src='animations/circles.json'
         style={{height:'600px', width:'600px', position:'absolute', left:'5%' ,bottom:'20%'}}
@@ -577,7 +554,6 @@ export default function Home() {
         speed={0.6}
         />
 
-
         <Player 
         src='animations/circles.json'
         style={{height:'600px', width:'600px', position:'absolute', left:'35%' ,top:'10%'}}
@@ -585,7 +561,6 @@ export default function Home() {
         loop
         speed={0.6}
         />
-
 
         </Wrapper>
       </main>
