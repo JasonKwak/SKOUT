@@ -255,8 +255,6 @@ export default function Home() {
       
     });
 
-
-
     setData(weatherData);
 
     setCity(response.data.city.name);
@@ -280,16 +278,9 @@ export default function Home() {
     }
   }
 
-  const [miamiData, setMiamiData] = useState();
-  const [miamiWeather, setMiamiWeather] = useState(null);
-
-
   useEffect(() => {
     fetchWeather();
   }, []);
-
-
-
 
   useEffect(() => {
       console.log(units)
@@ -332,7 +323,7 @@ export default function Home() {
         <CurrentCont>
           <Row style={{justifyContent:'space-between', width:'100%'}}>
 
-            { currentWeather ? currentWeather.map((w, index) => {
+            { currentWeather && currentWeather.map((w, index) => {
               return (
                 <Desc style={{gap:'0rem', border:'3px solid var(--yellow-color)', borderRadius:'15px', flexDirection:'row', alignItems:'center'}} >
               <City>{city.toUpperCase()}</City>
@@ -340,14 +331,8 @@ export default function Home() {
               </Desc>
 
               )
-            }) : 
-              miamiData && (
-                <Desc style={{gap:'0rem', border:'3px solid var(--yellow-color)', borderRadius:'15px', flexDirection:'row', alignItems:'center'}} >
-              <City>{miamiData.name.toUpperCase()}</City>
-              <h2 style={{padding:'0.25rem 1rem 0.25rem 0',fontSize:'0.75rem', color:'var(--lightgray-color)'}}>{miamiData.sys.country}</h2>
-              </Desc>
-                )
-              }
+            }
+            )}
 
               <ToggleButton
             type="button"
@@ -373,7 +358,7 @@ export default function Home() {
             </Row>
 
             {
-          currentWeather ? currentWeather.map((w, index) => {
+          currentWeather && currentWeather.map((w, index) => {
             return (
               <div key={index} style={{display:'flex', flexDirection:'row', justifyContent:'space-between', width:'100%', alignItems:'center'}}>
                
@@ -434,70 +419,8 @@ export default function Home() {
               </div>
             )
           }
-          ) :
-          miamiData &&
-          miamiWeather.map((w, index) => {
-            return (
-            <div key={index} style={{display:'flex', flexDirection:'row', justifyContent:'space-between', width:'100%', alignItems:'center'}}>
-               
-            <Row style={{gap:'7rem'}}>
-            
-            <Desc style={{flexDirection:'column', alignItems:'flex-start'}}>
-            <Subheader>CURRENT TEMPURATURE:</Subheader>
-            <Row>
-            <h1 style={{fontSize:'5rem', color:'var(--white-color)'}}>{miamiData.main.temp}</h1>
-            <h2 style={{color:'var(--white-color)'}}>°C</h2>
-            </Row>
-            </Desc>
-            
-            <Grid> 
-            <Desc style={{flexDirection:'column', color:'var(--white-color)', alignItems:'flex-start'}}>
-              <Subheader>FEELS LIKE:</Subheader>
-              <Row>
-              <h1 style={{fontSize:'1.5rem'}}>{miamiData.main.feels_like}</h1>
-              <h2 style={{color:'var(--white-color)', fontSize:'1rem'}}>°C</h2>
-              </Row>
-            </Desc>
-
-            <Desc style={{flexDirection:'column', color:'var(--white-color)', alignItems:'flex-start'}}>
-              <Subheader>HUMIDITY:</Subheader>
-              <Row>
-              <h1 style={{fontSize:'1.5rem'}}>{miamiData.main.humidity}</h1>
-              <h2 style={{color:'var(--white-color)', fontSize:'1rem'}}>%</h2>
-              </Row>
-            </Desc>
-
-            <Desc style={{flexDirection:'column', color:'var(--white-color)', alignItems:'flex-start'}}>
-              <Subheader>MIN. TEMP:</Subheader>
-              <Row>
-              <h1 style={{fontSize:'1.5rem'}}>{miamiData.main.temp_min}</h1>
-              <h2 style={{color:'var(--white-color)', fontSize:'1rem'}}>°C</h2>
-              </Row>
-            </Desc>
-
-            <Desc style={{flexDirection:'column', color:'var(--white-color)', alignItems:'flex-start'}}>
-              <Subheader>MAX. TEMP:</Subheader>
-              <Row>
-              <h1 style={{fontSize:'1.5rem'}}>{miamiData.main.temp_max}</h1>
-              <h2 style={{color:'var(--white-color)', fontSize:'1rem'}}>°C</h2>
-              </Row>
-            </Desc>
-            </Grid>
-            </Row>
-
-            <Column style={{justifyContent:'center', alignItems:'center'}}>
-            <Player
-              autoplay
-              loop
-              speed={1}
-              style={{ height: '200px', width: '200px'}}
-            src={`/animations/${w.main.toLowerCase()}.json`}/>
-            <h1 style={{fontSize:'1.5rem',color:'var(--white-color)'}}>{w.main}</h1>
-            </Column>
-          </div>
           )
-
-        } )}
+        }
         </CurrentCont>
         
         <Column style={{justifyContent:'flex-start' ,width:'100%'}}>
@@ -528,8 +451,6 @@ export default function Home() {
         loop
         speed={1}
         />
-
-
 
         <Player 
         src='animations/circles.json'
