@@ -1,0 +1,9 @@
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  font-family:'Arimo', sans-serif;
+  background-color:var(--darkgray-color);
+}
